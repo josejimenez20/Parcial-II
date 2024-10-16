@@ -1,0 +1,29 @@
+<form id="formLogin">
+    <input type="text" id="usuarioLogin" placeholder="Usuario" required><br>
+    <input type="password" id="claveLogin" placeholder="Clave" required><br>
+    <button type="button" onclick="iniciarSesion()">Iniciar Sesión</button>
+</form>
+<script>
+function iniciarSesion() {
+    const usuario = document.getElementById("usuarioLogin").value;
+    const clave = document.getElementById("claveLogin").value;
+
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ usuario, clave })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Inicio de sesión exitoso');
+            // Redirigir al sistema principal
+        } else {
+            alert('Usuario o clave incorrectos');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>

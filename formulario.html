@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuarios</title>
+    <link rel="stylesheet" href="estilos.css"> 
+</head>
+<body>
+    <div class="form-container">
+        <h2>Registro de Usuarios</h2>
+        <form id="registroForm">
+            <input type="text" id="usuario" name="usuario" placeholder="Nombre de usuario" required>
+            <input type="password" id="clave" name="clave" placeholder="Clave" required>
+            <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" required>
+            <input type="text" id="direccion" name="direccion" placeholder="Dirección" required>
+            <input type="tel" id="telefono" name="telefono" placeholder="Teléfono" required>
+            <div class="error-message" id="errorMensaje"></div>
+            <button type="button" onclick="registrarUsuario()">Registrar</button>
+        </form>
+    </div>
+
+    <script>
+        // Función para registrar el usuario
+        function registrarUsuario() {
+            const usuario = document.getElementById('usuario').value;
+            const clave = document.getElementById('clave').value;
+            const nombre = document.getElementById('nombre').value;
+            const direccion = document.getElementById('direccion').value;
+            const telefono = document.getElementById('telefono').value;
+
+            const datos = {
+                usuario: usuario,
+                clave: clave,
+                nombre: nombre,
+                direccion: direccion,
+                telefono: telefono
+            };
+
+            // Enviar los datos al servidor con fetch
+            fetch('/registrar_usuario', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Usuario registrado con éxito.');
+                    document.getElementById('registroForm').reset();
+                } else {
+                    document.getElementById('errorMensaje').textContent = 'Error al registrar el usuario.';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('errorMensaje').textContent = 'Error al registrar el usuario.';
+            });
+        }
+    </script>
+</body>
+</html>
